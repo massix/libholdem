@@ -8,12 +8,12 @@ OBJS	=	$(SRCS:.c=.o)
 CARD_TEST_LDFLAGS	=	-L. -lholdem
 CARD_TEST_SRCS		=	card_test.c
 CARD_TEST_OBJS		=	$(CARD_TEST_SRCS:.c=.o)
-CARD_TEST_TARGET	=	card_test
+CARD_TEST_TARGET	=	card_test.exe
 
-TARGET	=	libholdem.so
+TARGET	=	libholdem.dll
 
 
-all: $(TARGET)
+all: $(TARGET) $(CARD_TEST_TARGET)
 
 .PHONY: clean
 
@@ -24,7 +24,7 @@ $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 
-$(CARD_TEST_TARGET): $(CARD_TEST_OBJS)
+$(CARD_TEST_TARGET): $(TARGET) $(CARD_TEST_OBJS)
 	$(CC) -o $(CARD_TEST_TARGET) $(CARD_TEST_OBJS) $(CARD_TEST_LDFLAGS)
 
 clean:

@@ -72,6 +72,9 @@ uint	card_is_same (Card, Card);
 /* Creates a new ordered deck */
 Deck	deck_new ();
 
+/* Creates a new shuffled deck */
+Deck	deck_new_shuffled ();
+
 int		deck_is_empty (Deck);
 void	deck_free (Deck);
 uint	deck_count_cards (Deck);
@@ -80,9 +83,16 @@ uint	deck_count_cards (Deck);
   * Pushes a card at the end of the deck.
   * It may return -1 if the card is already in the deck
   */
-int		deck_push_card (Deck, Card);
+int		deck_push_card (Deck *, Card);
 
 /**
   * Gets the first card from the deck
   */
 Card	deck_pop_card (Deck *);
+
+
+/**
+ * Gets the card at index
+ */
+Card 	deck_get_card (Deck *, uint index);
+

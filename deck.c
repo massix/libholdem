@@ -11,7 +11,7 @@ Deck deck_new () {
 	ret->next = NULL;
 
 	int i = 0, j = 0;
-	for (i = 0; i < 13; i++) {
+	for (i = 1; i < 14; i++) {
 		for (j = 0; j < 4; j++) {
 			char seed;
 
@@ -30,7 +30,7 @@ Deck deck_new () {
 					break;
 			}
 
-			deck_push_card (ret,
+			deck_push_card (&ret,
 					card_new_with_values (i, seed));
 		}
 	}
@@ -38,23 +38,38 @@ Deck deck_new () {
 	return ret;
 }
 
-void deck_free (Deck d) {
-	Deck mover = d;
-	Deck eraser = d;
+Deck deck_new_shuffled () {
+	Deck original = deck_new ();
+	Deck shuffled = (Deck) malloc (sizeof (struct __deck));
 
-	while (mover->next != NULL) {
-		mover = mover->next;
-		free (eraser);
-		free (eraser->current);
-		eraser = mover;
+	shuffled->current = NULL;
+	shuffled->next = NULL;
+
+	while (!deck_is_empty (original)) {
+		uint rand_card = rand () % deck_count_cards (original);
+		Card c = deck_get_card (&original, rand_card);
+		if (c != NULL)
+			deck_push_card (&shuffled, c);
 	}
 
-	free (mover);
+	deck_free (original);
+	free (original);
+	return shuffled;
+}
+
+void deck_free (Deck d) {
+	while (!deck_is_empty(d)) {
+		Card c = deck_pop_card(&d);
+		free (c);
+	}
 }
 
 uint deck_count_cards (Deck d) {
 	int cards = 0;
 	Deck mover = d;
+
+	if (deck_is_empty(d))
+		return 0;
 
 	while (mover->next != NULL) {
 		cards++;
@@ -68,22 +83,22 @@ int deck_is_empty (Deck d) {
 	return (d->current == NULL);
 }
 
-int	deck_push_card (Deck d, Card c) {
+int	deck_push_card (Deck * d, Card c) {
 	Card curr_card;
 	Deck mover;
 
 	/* There are no cards in the Deck */
-	if (d->current == NULL)
-		d->current = c;
+	if ((*d)->current == NULL)
+		(*d)->current = c;
 
 	else {
-		mover = d;
+		mover = (*d);
 
 		while (mover->next != NULL) {
 			curr_card = mover->current;
 
 			if (card_is_same (curr_card, c))
-				return -1;
+				return 0;
 
 			mover = mover->next;
 		}
@@ -96,6 +111,7 @@ int	deck_push_card (Deck d, Card c) {
 		/** Allocates a new block and put the card in it **/
 		mover->next = (Deck) malloc (sizeof (struct __deck));
 		mover = mover->next;
+		mover->next = NULL;
 		mover->current = c;
 	}
 
@@ -112,8 +128,35 @@ Card deck_pop_card (Deck * d) {
 	Card ret = (*d)->current;
 	(*d)->current = NULL;
 
-	(*d) = (*d)->next;
-	free (head);
+	if ((*d)->next != NULL) {
+		(*d) = (*d)->next;
+		free (head);
+	}
 
 	return ret;
+}
+
+Card deck_get_card (Deck * d, uint index) {
+	Card ret;
+	Deck head = (*d);
+	Deck curr = (*d);
+
+	if (index > 0) {
+		uint i = 0;
+		while (i != index) {
+			head = curr;
+			curr = head->next;
+			if (curr->next == NULL)
+				break;
+			i++;
+		}
+
+		head->next = curr->next;
+		ret = curr->current;
+		free (curr);
+
+		return ret;
+	}
+
+	return deck_pop_card (d);
 }
