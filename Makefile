@@ -1,5 +1,5 @@
 CC		=	gcc
-CFLAGS	=	-Wall -Werror -ggdb -ansi --std=c99
+CFLAGS	=	-Wall -Werror -ggdb -ansi --std=c99 -DUNICODE_ENABLED
 LDFLAGS	=	-shared
 
 SRCS	=	\

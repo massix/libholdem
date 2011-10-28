@@ -1,9 +1,27 @@
 #include "holdem.h"
 
 void print_card (Card c) {
-	wprintf (L"\tCard \u9665: %d%c\n", 	card_get_value (c),
-										card_get_seed (c));
-	fflush (stdout);
+    printf ("\tCard: %02d (%c) ", card_get_value (c), card_get_seed (c));
+
+#ifdef UNICODE_ENABLED
+	switch (card_get_seed (c)) {
+		case HEARTS:
+			printf ("\u2665");
+			break;
+		case SPADES:
+			printf ("\u2660");
+			break;
+		case DIAMONDS:
+			printf ("\u2666");
+			break;
+		case CLUBS:
+			printf ("\u2663");
+			break;
+	}
+#endif
+
+	printf ("\n");
+    fflush (stdout);
 }
 
 int main () {
