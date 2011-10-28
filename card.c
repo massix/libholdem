@@ -4,7 +4,7 @@
 
 
 Card card_new () {
-	Card ret = malloc (sizeof (struct __card));
+	Card ret = (Card) malloc (sizeof (struct __card));
 
 	ret->value = 1;
 	ret->seed = HEARTS;
@@ -36,7 +36,7 @@ Card card_new_random () {
 }
 
 
-/* Internal function used to check if the seed given seed is good */
+/* Internal function used to check if the given seed is good */
 static int __check_seed (char seed) {
 	return (seed == HEARTS || seed == DIAMONDS || 
 			seed == CLUBS || seed == SPADES);
@@ -100,4 +100,9 @@ uint card_is_higher (Card first, Card second) {
 		return 1;
 
 	return 0;
+}
+
+uint card_is_same (Card first, Card second) {
+	return (first->value == second->value && 
+			first->seed == second->seed);
 }

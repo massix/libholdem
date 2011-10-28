@@ -2,7 +2,7 @@ CC		=	gcc
 CFLAGS	=	-Wall -Werror -ggdb
 LDFLAGS	=	-shared
 
-SRCS	=	card.c init.c
+SRCS	=	card.c init.c deck.c
 OBJS	=	$(SRCS:.c=.o)
 
 CARD_TEST_LDFLAGS	=	-L. -lholdem

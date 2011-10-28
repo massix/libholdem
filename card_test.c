@@ -41,5 +41,19 @@ int main () {
 	card_free (firstCard);
 	card_free (secondCard);
 
+
+	/* Test the Deck */
+	Deck d = deck_new ();
+	deck_free (d);
+
+	d = deck_new ();
+	while (!deck_is_empty (d)) {
+		firstCard = deck_pop_card (&d);
+		print_card (firstCard);
+	}
+
+	deck_free (d);
+
+	printf ("Ok\n");
 	return 0;
 }
