@@ -58,7 +58,6 @@ Deck deck_shuffle (Deck original) {
 	}
 
 	deck_free (original);
-	free (original);
 	return shuffled;
 }
 
