@@ -1,8 +1,13 @@
 CC		=	gcc
-CFLAGS	=	-Wall -Werror -ggdb
+CFLAGS	=	-Wall -Werror -ggdb -ansi --std=c99
 LDFLAGS	=	-shared
 
-SRCS	=	card.c init.c deck.c
+SRCS	=	\
+			card.c \
+			init.c \
+			deck.c \
+			player.c
+
 OBJS	=	$(SRCS:.c=.o)
 
 CARD_TEST_LDFLAGS	=	-L. -lholdem

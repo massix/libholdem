@@ -40,6 +40,11 @@ Deck deck_new () {
 
 Deck deck_new_shuffled () {
 	Deck original = deck_new ();
+
+	return deck_shuffle (original);
+}
+
+Deck deck_shuffle (Deck original) {
 	Deck shuffled = (Deck) malloc (sizeof (struct __deck));
 
 	shuffled->current = NULL;
@@ -62,6 +67,9 @@ void deck_free (Deck d) {
 		Card c = deck_pop_card(&d);
 		free (c);
 	}
+
+	free (d);
+	d = NULL;
 }
 
 uint deck_count_cards (Deck d) {

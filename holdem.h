@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 /** Typedefs and structures **/
@@ -20,6 +21,8 @@ struct __deck {
 	struct __deck * next;
 };
 
+
+
 enum {
 	HEARTS = 'H',
 	DIAMONDS = 'D',
@@ -29,6 +32,31 @@ enum {
 
 typedef struct __card * Card;
 typedef struct __deck * Deck;
+
+/** a standard player **/
+struct __player {
+	char * 	name;
+	uint	credit;
+	Card	hand[2];
+};
+
+typedef struct __player * Player;
+
+/** a play **/
+struct __play {
+	Player	players[5];
+	uint	playing;
+
+	Deck	deck;
+
+	Card	flop[3];
+	Card	river;
+	Card	turn;
+
+	uint	pot;
+};
+
+typedef struct __play * Play;
 
 /** Card APIs **/
 
@@ -75,6 +103,9 @@ Deck	deck_new ();
 /* Creates a new shuffled deck */
 Deck	deck_new_shuffled ();
 
+/* Shuffles an existing deck */
+Deck	deck_shuffle (Deck);
+
 int		deck_is_empty (Deck);
 void	deck_free (Deck);
 uint	deck_count_cards (Deck);
@@ -96,3 +127,17 @@ Card	deck_pop_card (Deck *);
  */
 Card 	deck_get_card (Deck *, uint index);
 
+
+/** Player APIs **/
+
+/** Creates a new player **/
+Player			player_new (const char *, uint);
+void			player_free (Player);
+
+void			player_give_hand (Player *, Card hand[2]);
+uint			player_place_bet (Player *, uint);
+void			player_reset_hand (Player *);
+
+const char * 	player_get_name (Player);
+uint			player_get_credit (Player);
+Card *			player_get_hand (Player);
