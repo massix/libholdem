@@ -1,5 +1,8 @@
 /** Copyright **/
 
+#ifndef _HOLDEM_H_
+#define _HOLDEM_H_
+
 /* holdem.h library description */
 
 #include <stdio.h>
@@ -38,6 +41,9 @@ struct __player {
 	char * 	name;
 	uint	credit;
 	Card	hand[2];
+
+	uint	fold;
+	uint	last_bet;
 };
 
 typedef struct __player * Player;
@@ -54,6 +60,12 @@ struct __play {
 	Card	turn;
 
 	uint	pot;
+
+	uint	ante;
+	uint	small_blind;
+	uint	big_blind;
+
+	uint	dealer;
 };
 
 typedef struct __play * Play;
@@ -134,10 +146,40 @@ Card 	deck_get_card (Deck *, uint index);
 Player			player_new (const char *, uint);
 void			player_free (Player);
 
-void			player_give_hand (Player *, Card hand[2]);
+void			player_deal_hand (Player *, Card[2]);
 uint			player_place_bet (Player *, uint);
 void			player_reset_hand (Player *);
 
 const char * 	player_get_name (Player);
 uint			player_get_credit (Player);
 Card *			player_get_hand (Player);
+uint			player_has_folded (Player);
+uint			player_get_last_bet (Player);
+
+
+
+/** Play APIs **/
+Play			play_new (Deck, uint, uint, uint);
+void			play_free (Play);
+
+uint			play_register_player (Play *, Player);
+uint			play_get_players_count (Play);
+Player			play_get_player (Play, uint);
+
+void			play_set_dealer (Play *, uint);
+Player			play_get_dealer (Play);
+Player			play_get_small_blind (Play);
+Player			play_get_big_blind (Play);
+
+uint			play_get_pot (Play);
+
+void			play_deal_hands (Play *);
+
+void			play_deal_flop (Play *);
+void			play_deal_turn (Play *);
+void			play_deal_river (Play *);
+
+void			play_place_ante (Play *);
+void			play_place_bet (Play *, uint, uint);
+
+#endif

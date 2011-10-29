@@ -1,12 +1,13 @@
 CC		=	gcc
-CFLAGS	=	-Wall -Werror -ggdb -ansi --std=c99 -DUNICODE_ENABLED
+CFLAGS	=	-Wall -Werror -ggdb -ansi --std=c99 # -DUNICODE_ENABLED
 LDFLAGS	=	-shared
 
 SRCS	=	\
 			card.c \
 			init.c \
 			deck.c \
-			player.c
+			player.c \
+			play.c
 
 OBJS	=	$(SRCS:.c=.o)
 

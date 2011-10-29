@@ -26,64 +26,37 @@ void print_card (Card c) {
 
 int main () {
 	holdem_init ();
-	Deck shuffled = deck_new_shuffled ();
 
-	/** Testing players **/
-	Player massi = player_new ("Massimo", 25000);
-	Player flavio = player_new ("Flavio", 30000);
-	Player monica = player_new ("Monica", 10000);
+	Play p = play_new (deck_new (), 0, 500, 1000);
 
-	printf ("Players: %s, %s and %s\n", player_get_name (massi),
-			player_get_name (flavio), player_get_name (monica));
+	play_register_player (&p, player_new ("Flavio", 80000));
+	play_register_player (&p, player_new ("Monica", 80000));
+	play_register_player (&p, player_new ("Massi", 80000));
+	play_register_player (&p, player_new ("Alice", 80000));
 
-	Card array[2];
-	array[0] = deck_pop_card (&shuffled);
-	array[1] = deck_pop_card (&shuffled);
-	player_give_hand (&massi, array);
+	play_set_dealer (&p, 3);
 
-	array[0] = deck_pop_card (&shuffled);
-	array[1] = deck_pop_card (&shuffled);
-	player_give_hand (&flavio, array);
+	printf ("There are %d players at the table\n", play_get_players_count (p));
+	printf ("Dealer is %s, small blind is %s, big blind is %s\n",
+			player_get_name (play_get_dealer (p)),
+			player_get_name (play_get_small_blind (p)),
+			player_get_name (play_get_big_blind (p)));
 
-	array[0] = deck_pop_card (&shuffled);
-	array[1] = deck_pop_card (&shuffled);
-	player_give_hand (&monica, array);
+	play_place_ante (&p);
+	play_deal_hands (&p);
+	for (int i = 0; i < play_get_players_count (p); i++) {
+		Player get = play_get_player (p, i);
+		Card * hand = player_get_hand (get);
+		play_place_bet (&p, i, 2500);
 
-	printf ("Deck has %d cards\n", deck_count_cards (shuffled));
+		printf ("Player %s has %d credits left and hand:\n", player_get_name (get), player_get_credit (get));
+		print_card (hand[0]);
+		print_card (hand[1]);
+	}
 
-	Card * pl_cards = player_get_hand (massi);
-	printf ("%s has:\n", player_get_name (massi));
-	print_card (pl_cards[0]);
-	print_card (pl_cards[1]);
+	printf ("Pot is: %d\n", play_get_pot (p));
 
-	deck_push_card (&shuffled, pl_cards[0]);
-	deck_push_card (&shuffled, pl_cards[1]);
-
-	pl_cards = player_get_hand (flavio);
-	printf ("%s has:\n", player_get_name (flavio));
-	print_card (pl_cards[0]);
-	print_card (pl_cards[1]);
-
-	deck_push_card (&shuffled, pl_cards[0]);
-	deck_push_card (&shuffled, pl_cards[1]);
-
-	pl_cards = player_get_hand (monica);
-	printf ("%s has:\n", player_get_name (monica));
-	print_card (pl_cards[0]);
-	print_card (pl_cards[1]);
-
-	deck_push_card (&shuffled, pl_cards[0]);
-	deck_push_card (&shuffled, pl_cards[1]);
-
-	printf ("Deck has %d cards\n", deck_count_cards (shuffled));
-
-	shuffled = deck_shuffle (shuffled);
-	/** Check that the Deck has all the cards **/
-
-
-
-	player_free (massi);
-	player_free (flavio);
+	play_free (p);
 
 	return 0;
 }
