@@ -11,10 +11,11 @@ SRCS	=	\
 
 OBJS	=	$(SRCS:.c=.o)
 
-CARD_TEST_LDFLAGS	=	-L. -lholdem
-CARD_TEST_SRCS		=	card_test.c
+CARD_TEST_CFLAGS	=	-I/opt/local/include
+CARD_TEST_LDFLAGS	=	-L/opt/local/lib -lcheck -L. -lholdem
+CARD_TEST_SRCS		=	tests.c
 CARD_TEST_OBJS		=	$(CARD_TEST_SRCS:.c=.o)
-CARD_TEST_TARGET	=	card_test
+CARD_TEST_TARGET	=	tests
 
 TARGET	=	libholdem.dylib
 
@@ -27,7 +28,7 @@ $(TARGET): $(OBJS)
 	$(CC) $(LDFLAGS) -o $(TARGET) $(OBJS)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CARD_TEST_CFLAGS) $(CFLAGS) -c $< -o $@
 
 
 $(CARD_TEST_TARGET): $(TARGET) $(CARD_TEST_OBJS)

@@ -29,26 +29,26 @@ void player_free (Player player) {
 	free (player);
 }
 
-void player_deal_hand (Player * p, Card hand[2]) {
-	(*p)->hand[0] = hand[0];
-	(*p)->hand[1] = hand[1];
+void player_deal_hand (Player p, Card hand[2]) {
+	p->hand[0] = hand[0];
+	p->hand[1] = hand[1];
 }
 
-uint player_place_bet (Player * p, uint bet) {
-	if (bet > (*p)->credit || bet < 0) {
-		(*p)->fold = 1;
+uint player_place_bet (Player p, uint bet) {
+	if (bet > p->credit || bet < 0) {
+		p->fold = 1;
 		return 0;
 	}
 
-	(*p)->credit -= bet;
-	(*p)->last_bet = bet;
+	p->credit -= bet;
+	p->last_bet = bet;
 
 	return bet;
 }
 
-void player_reset_hand (Player * p) {
-	(*p)->hand[0] = NULL;
-	(*p)->hand[1] = NULL;
+void player_reset_hand (Player p) {
+	p->hand[0] = NULL;
+	p->hand[1] = NULL;
 }
 
 const char * player_get_name (Player p) {

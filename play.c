@@ -46,11 +46,11 @@ void play_free (Play p) {
 	free (p);
 }
 
-uint play_register_player (Play * p, Player player) {
-	if ((*p)->playing > 4)
+uint play_register_player (Play p, Player player) {
+	if (p->playing > 4)
 		return 0;
 
-	(*p)->players[(*p)->playing++] = player;
+	p->players[(p->playing)++] = player;
 	return 1;
 }
 
@@ -92,60 +92,60 @@ uint play_get_pot (Play p) {
 	return p->pot;
 }
 
-void play_deal_hands (Play * p) {
+void play_deal_hands (Play p) {
 	int i = 0;
 
-	(*p)->deck = deck_shuffle ((*p)->deck);
+	p->deck = deck_shuffle (p->deck);
 
-	for (i = 0; i < (*p)->playing; i++) {
+	for (i = 0; i < p->playing; i++) {
 		Card hand[2];
-		hand[0] = deck_pop_card (&((*p)->deck));
-		hand[1] = deck_pop_card (&((*p)->deck));
+		hand[0] = deck_pop_card (&(p->deck));
+		hand[1] = deck_pop_card (&(p->deck));
 
-		player_deal_hand (&((*p)->players[i]), hand);
+		player_deal_hand (p->players[i], hand);
 	}
 }
 
-void play_deal_flop (Play * p) {
-	free (deck_pop_card (&((*p)->deck)));
-	(*p)->flop[0] = deck_pop_card ((&((*p)->deck)));
+void play_deal_flop (Play p) {
+	free (deck_pop_card (&(p->deck)));
+	p->flop[0] = deck_pop_card (&(p->deck));
 
-	free (deck_pop_card (&((*p)->deck)));
-	(*p)->flop[1] = deck_pop_card (&((*p)->deck));
+	free (deck_pop_card (&(p->deck)));
+	p->flop[1] = deck_pop_card (&(p->deck));
 
-	free (deck_pop_card (&((*p)->deck)));
-	(*p)->flop[1] = deck_pop_card ((&((*p)->deck)));
+	free (deck_pop_card (&(p->deck)));
+	p->flop[1] = deck_pop_card (&(p->deck));
 }
 
-void play_deal_turn (Play * p) {
-	free (deck_pop_card ((&((*p)->deck))));
-	(*p)->turn = deck_pop_card ((&((*p)->deck)));
+void play_deal_turn (Play p) {
+	free (deck_pop_card (&(p->deck)));
+	p->turn = deck_pop_card (&(p->deck));
 }
 
-void play_deal_river (Play * p) {
-	free (deck_pop_card ((&((*p)->deck))));
-	(*p)->turn = deck_pop_card ((&((*p)->deck)));
+void play_deal_river (Play p) {
+	free (deck_pop_card (&(p->deck)));
+	p->turn = deck_pop_card (&(p->deck));
 }
 
-void play_place_ante (Play * p) {
+void play_place_ante (Play p) {
 	int i = 0;
 
-	for (i = 0; i < (*p)->playing; i++) {
-		if ((*p)->players[i] == play_get_small_blind (*p))
-			(*p)->pot += player_place_bet (&((*p)->players[i]), (*p)->small_blind);
+	for (i = 0; i < p->playing; i++) {
+		if (p->players[i] == play_get_small_blind (p))
+			p->pot += player_place_bet (p->players[i], p->small_blind);
 
-		else if ((*p)->players[i] == play_get_big_blind (*p))
-			(*p)->pot += player_place_bet (&((*p)->players[i]), (*p)->big_blind);
+		else if (p->players[i] == play_get_big_blind (p))
+			p->pot += player_place_bet (p->players[i], p->big_blind);
 
 		else
-			(*p)->pot += player_place_bet (&((*p)->players[i]), (*p)->ante);
+			p->pot += player_place_bet (p->players[i], p->ante);
 	}
 
 }
 
-void play_place_bet (Play * p, uint index, uint bet) {
-	if (index >= 0 && index < (*p)->playing) {
-		if (!player_has_folded ((*p)->players[index]))
-			(*p)->pot += player_place_bet (&((*p)->players[index]), bet);
+void play_place_bet (Play p, uint index, uint bet) {
+	if (index >= 0 && index < p->playing) {
+		if (!player_has_folded (p->players[index]))
+			p->pot += player_place_bet (p->players[index], bet);
 	}
 }

@@ -146,9 +146,9 @@ Card 	deck_get_card (Deck *, uint index);
 Player			player_new (const char *, uint);
 void			player_free (Player);
 
-void			player_deal_hand (Player *, Card[2]);
-uint			player_place_bet (Player *, uint);
-void			player_reset_hand (Player *);
+void			player_deal_hand (Player, Card[2]);
+uint			player_place_bet (Player, uint);
+void			player_reset_hand (Player);
 
 const char * 	player_get_name (Player);
 uint			player_get_credit (Player);
@@ -162,7 +162,7 @@ uint			player_get_last_bet (Player);
 Play			play_new (Deck, uint, uint, uint);
 void			play_free (Play);
 
-uint			play_register_player (Play *, Player);
+uint			play_register_player (Play, Player);
 uint			play_get_players_count (Play);
 Player			play_get_player (Play, uint);
 
@@ -173,13 +173,13 @@ Player			play_get_big_blind (Play);
 
 uint			play_get_pot (Play);
 
-void			play_deal_hands (Play *);
+void			play_deal_hands (Play);
 
-void			play_deal_flop (Play *);
-void			play_deal_turn (Play *);
-void			play_deal_river (Play *);
+void			play_deal_flop (Play);
+void			play_deal_turn (Play);
+void			play_deal_river (Play);
 
-void			play_place_ante (Play *);
-void			play_place_bet (Play *, uint, uint);
+void			play_place_ante (Play);
+void			play_place_bet (Play, uint, uint);
 
 #endif
