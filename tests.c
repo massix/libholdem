@@ -64,16 +64,25 @@ START_TEST (deck_consistency)
 	fail_if (deck_count_cards (ordered) != 52, "Ordered deck hasn't 52 cards inside.");
 	deck_free (ordered);
 
+	mark_point ();
+
 	// Shuffled deck
 	Deck shuffled = deck_new_shuffled ();
+	fail_if (shuffled == NULL, "Shuffled deck wasn't created correctly.");
 	fail_if (deck_count_cards (shuffled) != 52, "Shuffled deck hasn't 52 cards inside.");
 	deck_free (shuffled);
+}
+END_TEST
 
+START_TEST (deck_push_pop)
+{
 	// Push and pop from an ordered deck
 	Deck push_ordered = deck_new ();
 	Card popped = deck_pop_card (&push_ordered);
 	fail_if (card_get_seed (popped) != HEARTS, "Ordered deck doesn't begin with HEARTS as seed.");
 	fail_if (deck_count_cards (push_ordered) != 51, "Card wasn't correctly popped from the deck.");
+
+	mark_point ();
 
 	deck_push_card (&push_ordered, popped);
 	fail_if (deck_count_cards (push_ordered) != 52, "Card wasn't correctly pushed inside the deck.");
@@ -83,7 +92,7 @@ START_TEST (deck_consistency)
 END_TEST
 
 const char * 	p_name = "Massimo";
-int				initial_credit = 20000;
+const int		initial_credit = 20000;
 START_TEST (player_consistency)
 {
 	Player massi = player_new (p_name, initial_credit);
@@ -147,7 +156,11 @@ Suite * decks_suite ()
 	TCase * consistency = tcase_create ("Decks' consistency");
 	tcase_add_test (consistency, deck_consistency);
 
+	TCase * ppop = tcase_create ("Decks' push and pop");
+	tcase_add_test (ppop, deck_push_pop);
+
 	suite_add_tcase (s, consistency);
+	suite_add_tcase (s, ppop);
 
 	return s;
 }
