@@ -80,11 +80,11 @@ Deck deck_shuffle (Deck original) {
 void deck_free (Deck d) {
 	while (!deck_is_empty(d)) {
 		Card c = deck_pop_card(&d);
-		free (c);
+		if (c != NULL)
+			free (c);
 	}
 
 	free (d);
-	d = NULL;
 }
 
 uint deck_count_cards (Deck d) {
