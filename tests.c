@@ -60,13 +60,14 @@ START_TEST (deck_consistency)
 {
 	// Ordered deck
 	Deck ordered = deck_new ();
+	fail_if (ordered == NULL, "Deck wasn't created correctly.");
 	fail_if (deck_count_cards (ordered) != 52, "Ordered deck hasn't 52 cards inside.");
 	deck_free (ordered);
 
 	// Shuffled deck
 	Deck shuffled = deck_new_shuffled ();
 	fail_if (deck_count_cards (shuffled) != 52, "Shuffled deck hasn't 52 cards inside.");
-	deck_free (ordered);
+	deck_free (shuffled);
 
 	// Push and pop from an ordered deck
 	Deck push_ordered = deck_new ();
@@ -77,6 +78,7 @@ START_TEST (deck_consistency)
 	deck_push_card (&push_ordered, popped);
 	fail_if (deck_count_cards (push_ordered) != 52, "Card wasn't correctly pushed inside the deck.");
 	fail_if (deck_push_card (&push_ordered, card_new_with_values (1, HEARTS)) != -1, "Deck has a duplicate card, now.");
+	deck_free (push_ordered);
 }
 END_TEST
 

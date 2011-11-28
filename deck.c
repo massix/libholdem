@@ -68,7 +68,7 @@ Deck deck_shuffle (Deck original) {
 
 	while (!deck_is_empty (original)) {
 		uint rand_card = rand () % deck_count_cards (original);
-		Card c = deck_get_card (&original, rand_card);
+		Card c = deck_get_card (original, rand_card);
 		if (c != NULL)
 			deck_push_card (&shuffled, c);
 	}
@@ -88,7 +88,7 @@ void deck_free (Deck d) {
 }
 
 uint deck_count_cards (Deck d) {
-	int cards = 0;
+	int cards = 1;
 	Deck mover = d;
 
 	if (deck_is_empty(d))
@@ -99,7 +99,7 @@ uint deck_count_cards (Deck d) {
 		mover = mover->next;
 	}
 
-	return ++cards;
+	return cards;
 }
 
 int deck_is_empty (Deck d) {
@@ -181,5 +181,5 @@ Card deck_get_card (Deck d, uint index) {
 		return ret;
 	}
 
-	return deck_pop_card (d);
+	return deck_pop_card (&d);
 }
