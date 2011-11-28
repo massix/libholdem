@@ -1,2 +1,5 @@
 .cproject
 .project
+*.o
+*.dylib
+tests
