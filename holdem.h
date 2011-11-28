@@ -153,7 +153,7 @@ Card	deck_pop_card (Deck *);
 /**
  * Gets the card at index
  */
-Card 	deck_get_card (Deck *, uint index);
+Card 	deck_get_card (Deck, uint index);
 
 
 /** Player APIs **/

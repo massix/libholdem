@@ -159,10 +159,10 @@ Card deck_pop_card (Deck * d) {
 	return ret;
 }
 
-Card deck_get_card (Deck * d, uint index) {
+Card deck_get_card (Deck d, uint index) {
 	Card ret;
-	Deck head = (*d);
-	Deck curr = (*d);
+	Deck head = d;
+	Deck curr = d;
 
 	if (index > 0) {
 		uint i = 0;
