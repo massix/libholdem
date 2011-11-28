@@ -131,16 +131,23 @@ Deck	deck_new ();
 /* Creates a new shuffled deck */
 Deck	deck_new_shuffled ();
 
-/* Shuffles an existing deck */
+/* Shuffles an existing deck
+ *
+ * This actually returns a new (m)alloc'd deck, the deck passed as
+ * argument will be automatically freed.
+ */
 Deck	deck_shuffle (Deck);
 
+/* Returns 1 if deck is empty, 0 otherwise */
 int		deck_is_empty (Deck);
 void	deck_free (Deck);
+
+/* Returns the number of the cards in the deck */
 uint	deck_count_cards (Deck);
 
 /**
   * Pushes a card at the end of the deck.
-  * It may return -1 if the card is already in the deck
+  * Returns -1 if the card is already in the deck
   */
 int		deck_push_card (Deck *, Card);
 
@@ -151,21 +158,42 @@ Card	deck_pop_card (Deck *);
 
 
 /**
- * Gets the card at index
+ * Gets the card at the given index
  */
 Card 	deck_get_card (Deck, uint index);
 
 
 /** Player APIs **/
 
-/** Creates a new player **/
+/** Creates a new player
+ *	First parameter is the name of the player
+ *	Second parameter is the initial credit of the player
+ */
 Player			player_new (const char *, uint);
 void			player_free (Player);
 
+/*
+ * Deals the hand to the player
+ *
+ * This may overwrite the cards that the player is already holding
+ */
 void			player_deal_hand (Player, Card[2]);
+
+/*
+ * Lets the player place the bet given as arguments
+ * returns the bet if everything goes right
+ * returns 0 if bet > credit and sets the "folded" bit to 1
+ */
 uint			player_place_bet (Player, uint);
+
+/*
+ * Sets to NULL the cards' pointer
+ */
 void			player_reset_hand (Player);
 
+/*
+ * Getters
+ */
 const char * 	player_get_name (Player);
 uint			player_get_credit (Player);
 Card *			player_get_hand (Player);
@@ -175,27 +203,56 @@ uint			player_get_last_bet (Player);
 
 
 /** Play APIs **/
+
+/*
+ * Create a new Play with the given Deck.
+ * Second parameter is the ante of the play
+ * Third parameter is the small blind
+ * Fourth parameter is the big blind
+ */
 Play			play_new (Deck, uint, uint, uint);
 void			play_free (Play);
 
+/*
+ * Inserts a player into the play. Returns -1 if there are already 4 players registered
+ */
 uint			play_register_player (Play, Player);
+
+/*
+ * Getters
+ */
 uint			play_get_players_count (Play);
 Player			play_get_player (Play, uint);
-
-void			play_set_dealer (Play *, uint);
 Player			play_get_dealer (Play);
 Player			play_get_small_blind (Play);
 Player			play_get_big_blind (Play);
-
 uint			play_get_pot (Play);
 
+/*
+ * Setters
+ */
+void			play_set_dealer (Play *, uint);
+
+/*
+ * Deal hands (first two cards) to every player registered
+ */
 void			play_deal_hands (Play);
 
+/*
+ * Deals flop, turn and river.
+ */
 void			play_deal_flop (Play);
 void			play_deal_turn (Play);
 void			play_deal_river (Play);
 
+/*
+ * Makes every player registered to place the ante
+ */
 void			play_place_ante (Play);
-void			play_place_bet (Play, uint, uint);
+
+/*
+ * Lets the player at index place the bet
+ */
+void			play_place_bet (Play, uint index, uint bet);
 
 #endif
