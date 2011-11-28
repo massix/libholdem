@@ -14,9 +14,9 @@ OBJS	=	$(SRCS:.c=.o)
 CARD_TEST_LDFLAGS	=	-L. -lholdem
 CARD_TEST_SRCS		=	card_test.c
 CARD_TEST_OBJS		=	$(CARD_TEST_SRCS:.c=.o)
-CARD_TEST_TARGET	=	card_test.exe
+CARD_TEST_TARGET	=	card_test
 
-TARGET	=	libholdem.dll
+TARGET	=	libholdem.dylib
 
 
 all: $(TARGET) $(CARD_TEST_TARGET)
