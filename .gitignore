@@ -3,5 +3,8 @@
 *.o
 *.dylib
 tests
+build
+tests.log
+tests.xml
 
 gmon.out
