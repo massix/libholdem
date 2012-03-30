@@ -6,5 +6,8 @@ tests
 build
 tests.log
 tests.xml
+src/holdem_version.h
+.DS_STORE
+.settings/
 
 gmon.out
