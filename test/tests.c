@@ -28,11 +28,15 @@ START_TEST (cards_consistency)
 	fail_if (card_get_seed (t_card) != SPADES, "Seed not correct.");
 	fail_if (card_get_value (t_card) != 4, "Value not correct.");
 	card_free (t_card);
+}
+END_TEST
 
+START_TEST (default_card_consistency)
+{
 	// Creating with default values
 	Card d_card = card_new ();
-	fail_if (card_get_seed (t_card) != HEARTS, "Default seed not initialized.");
-	fail_if (card_get_value (t_card) != 1, "Default value not initialized.");
+	fail_if (card_get_seed (d_card) != HEARTS, "Default seed not initialized.");
+	fail_if (card_get_value (d_card) != 1, "Default value not initialized.");
 	card_free (d_card);
 }
 END_TEST
@@ -45,7 +49,11 @@ START_TEST (cards_comparison)
 	fail_unless (card_is_higher (higher_card, lower_card), "Wrong comparison between higher-lower card.");
 	card_free (lower_card);
 	card_free (higher_card);
+}
+END_TEST
 
+START_TEST (same_cards_comparison)
+{
 	Card card_one = card_new ();
 	Card card_two = card_new ();
 
@@ -142,9 +150,11 @@ Suite * cards_suite ()
 	Suite * s = suite_create ("Cards' suite");
 	TCase * consistency = tcase_create ("Cards' consistency");
 	tcase_add_test (consistency, cards_consistency);
+	tcase_add_test (consistency, default_card_consistency);
 
 	TCase * comparison = tcase_create ("Cards' comparison");
 	tcase_add_test (comparison, cards_comparison);
+	tcase_add_test (comparison, same_cards_comparison);
 
 	suite_add_tcase (s, consistency);
 	suite_add_tcase (s, comparison);
@@ -190,8 +200,7 @@ Suite * players_suite ()
 
 int main (void)
 {
-	Suite * s = cards_suite ();
-	SRunner * sr = srunner_create (s);
+	SRunner * sr = srunner_create (cards_suite ());
 	srunner_set_log(sr, "tests.log");
 	srunner_set_xml(sr, "tests.xml");
 
