@@ -17,6 +17,7 @@
 
 
 #include "holdem.h"
+#include "holdem_version.h"
 
 // Check Unit Testing
 #include <check.h>
@@ -200,6 +201,9 @@ Suite * players_suite ()
 
 int main (void)
 {
+	printf ("TESTING LIBHOLDEM %d.%d.%d\n", HOLDEM_MAJOR, HOLDEM_REVIEW,
+			HOLDEM_MINOR);
+
 	SRunner * sr = srunner_create (cards_suite ());
 	srunner_set_log(sr, "tests.log");
 	srunner_set_xml(sr, "tests.xml");
